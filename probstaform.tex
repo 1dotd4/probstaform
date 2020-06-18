@@ -1,0 +1,321 @@
+\documentclass[a4paper,9pt]{article}
+
+\usepackage{amssymb}
+\usepackage{amsmath}
+\usepackage{bbold}
+\usepackage{relsize}
+\usepackage{multicol}
+\usepackage{geometry}
+\usepackage{graphicx}
+\usepackage{makecell}
+
+\geometry{a4paper, left=10mm, right=10mm, top=20mm}
+\setlength{\parindent}{0pt}
+
+
+\newcommand{\indep}{\rotatebox[origin=c]{90}{$\models$}}
+
+\begin{document}
+\begin{multicols*}{3}
+
+\begin{center}
+    \Large{Probabilit\`a e statistica} \\
+    \footnotesize{12 giugno 2019}
+\end{center}
+
+\bigskip
+
+\subsection*{richiami di v.a.}
+% varianza
+\textbf{Def} Varianza. \textit{Sia $X$ v.a. con legge $P_X$ e alfabeto composto da elementi $x_k$. Si definisce la varianza:}
+
+$$Var(X) = \mathlarger{\sum_{x_k}}[x_k - E(X)]^2 P_X(x_k)$$
+
+\textit{Valgono:}
+\begin{enumerate}
+\item $Var(X) = E[(X-E(X))^2] = E(X^2) - (E(X))^2$
+\item $Var(X) \geq 0$, in particolare $Var(X) = 0 \Leftrightarrow X \equiv costante$
+\item $Var(aX) = a^2 Var(X)$, $a \in \mathbb{R}$
+\item $Var(X + a) = Var(X)$, $a \in \mathbb{R}$
+\item $X \indep Y \Longrightarrow Var(X+Y) = Var(X) + Var(Y)$
+\end{enumerate}
+
+
+% covarianza
+\textbf{Def} Covarianza. \textit{Siano $X,\,Y$ v.a.. Si definisce la covarianza:}
+
+$$Cov(X, Y) = E[(X - E(X))(Y - E(Y))]$$
+
+\textit{Valgono:}
+\begin{enumerate}
+\item $Cov(X, Y) = E(XY) - E(X)E(Y)$
+\item $Cov(Y, X) = Cov(X, Y)$
+\item $Cov(aX + b, Y) = aCov(X, Y)$
+\item $Cov(X + Y, Z) = Cov(X, Z) + Cov(Y, Z)$
+\item $X \indep \Longrightarrow Cov(X, Y) = 0$
+\end{enumerate}
+
+% Variabili scorrelate
+
+\textbf{Def} V.a. scorrelate. \textit{Le v.a. $X$, $Y$ sono dette scorrelate se $Cov(X, Y) = 0$}
+
+\subsection*{V.a. notevoli}
+% variabili aleatorie notevoli
+
+\begin{tabular}{ |c|c|c|c|c| }
+    \hline
+    v.a. & Def & $p_X(k)$ & $E(X)$ & $Var(X)$ \\
+    \hline
+    Bernulli & $X \sim \mathcal{B}e(p)$ & \makecell{$p_X(1) = p$ \\ $p_X(0) = 1 - p$} & $p$ & $p(1-p)$ \\
+    \hline
+    Binomiale & $X \sim \mathcal{B}in(n, p)$ & $\binom{n}{k} p^k (1-p)^{n-k}$ & $np$ & $np(1-p)$ \\
+    \hline
+    Geometrica & $X \sim \mathcal{G}e(p)$ & $p(1-p)^{k-1}$ & $\frac{1}{p}$ & $\frac{1-p}{p}$ \\
+    \hline
+    Poisson & $X \sim \mathcal{P}o(\lambda)$ & $e^{-\lambda} \frac{\lambda^k}{k!}$ & $\lambda$ & $\lambda$ \\
+    \hline
+\end{tabular}
+
+\subsection*{Teorema Limite di Poisson}
+Siano $X \sim \mathcal{B}in(n, \frac{\lambda}{n})$ e $Y \sim \mathcal{P}o(\lambda)$. \\
+Allora $\lim_{n\to\infty} p_{X_0}(k) = p_Y(k)$, \\ con $k \in \mathbb{N}_0$ fissato.
+
+\textit{Ossia posso trattare come una Poisson le binomiali con n molto grande e p molto piccoli \\ Euristica: $n > 100;\; p < 0.01;\; np \leq 20$}
+
+\section*{Vettori aleatori discreti}
+
+\textbf{Def} Vettore aleatorio discreto \textit{Sia $(\Omega, \mathbb{P}, P)$ uno spaz. di prob. discreto. Un vettore aleatoriio \`e una funzione: $V: \Omega \to \mathbb{R}^n$, ossia \\ $\omega \mapsto V(\omega) = \big(X_1(w), \dots, X_n(\omega)\big)$. D'ora in poi si assume $n = 2$}
+
+\bigskip
+
+\textbf{Def} Densit\`a congiunta. \textit{Siano $X$ e $Y$ v.a. con densit\`a $P_X$ e $P_Y$. Si definisce $P_{XY} : \mathcal{X} \times \mathcal{Y} \to [0, 1]$, ossia \\ $(x_i, y_j) \mapsto p_{XY}(x_i, y_j) = P(X=x_i,\, Y=y_j)$}
+
+\bigskip
+
+\textbf{Def} Densit\`a marginale. \textit{Sia $P_{XY}$ densit\`a congiunta delle v.a. $X$ e $Y$. Si dicono densit\`a marginali $P_X$ e $P_Y$. Valgono:}
+
+\begin{enumerate}
+    \item $P_X(x_i) = \mathlarger{\sum_{y_j}} P_{XY}(x_i, y_j)$
+    \item $P_Y(y_i) = \mathlarger{\sum_{x_i}} P_{XY}(x_i, y_j)$
+\end{enumerate}
+
+\textbf{Prop} \textit{Siano $X$, $Y$ v.a. e sia $g: \mathbb{R}^2 \to \mathbb{R}$. Allora:}
+$$E[g(X, Y)] = \mathlarger{\sum_{x_i, y_j}} g(x_i, y_j) P_{XY}(x_i, y_j)$$
+
+\bigskip
+
+\textbf{Def} Indipendenza. \textit{Siano $X$, $Y$ v.a. con alfabeti composti da elementi $x_i$ e $y_j$. Allora $X \indep Y$ se:}
+
+$$P_{XY}(x_i, y_j) = P_X(x_i)P_Y(y_j) \quad\forall x_i, y_j$$
+
+\vspace{3.5cm}
+
+\subsection*{V.a. ass. continue}
+
+\textbf{Def} \textit{
+    Una v.a. $X$ si dice (ass.) continua si definisce associando una densit\`a $f_x : \mathbb{R}\to\mathbb{R}$ tale che:
+\begin{enumerate}
+    \item $f_X(x) \geq 0$
+    \item $\int_\mathbb{R} f_X(x) dx = 1$
+\end{enumerate}
+Valgono:
+\begin{enumerate}
+    \item $P(X \in I = P_X(I) = \int_I f_X(x)dx$
+    \item $P_X(a) = 0\quad\forall a\in\mathbb{R}$
+\end{enumerate}
+}
+
+\textbf{Def} Funzione di distribuzione. \\  \textit{
+    $F_X : \mathbb{R} \to [0, 1]$ \\
+    $x \mapsto F_X(x) = P(X \leq x)$
+}
+
+\bigskip
+
+\textbf{Def} Valor medio v.a.c.. \textit{
+    $$E(X) = \mathlarger{\int_\mathbb{R}} x f_x(x)dx$$
+}
+
+\textbf{Def} Varianza v.a.c.. \textit{
+    $$E(X) = \mathlarger{\int_\mathbb{R}} [x - E(X)]^2 f_x(x)dx$$
+}
+
+\subsection*{V.a.c. notevoli}
+
+\textbf{Def} V.a. uniformi. \textit{
+    $X \sim U(a, b)$ con densit\`a:
+    $$f_x(x) = \frac{1}{b-a}\mathbb{1}_{(a, b)}(x)$$
+    Valogono:
+    \begin{enumerate}
+        \item $P_X(I) = \frac{|I\cap(a,b)|}{b-a}$
+        \item $E(X) = \frac{b+a}{2}$
+        \item $Var(X) = \frac{(b-a)^2}{12}$
+    \end{enumerate}
+}
+
+\textbf{Def} V.a. esponenziale. \textit{
+    $X \sim Exp(\lambda)$ con densit\`a:
+    $$f_X(x) = \begin{cases}
+        \lambda e^{-\lambda x} & \text{se } t \geq 0 \\
+        0 & \text{altrimenti}
+    \end{cases}$$
+    Descrive la durata della vita di un fenomeno privo di memoria. Valgono:
+    \begin{enumerate}
+        \item $E(X) = \frac{1}{\lambda}$
+        \item $Var(X) = \frac{1}{\lambda^2}$
+        \item $P(X \geq T+t \mid X \geq T) = P(X \geq t)$
+    \end{enumerate}
+}
+
+\textbf{Def} Gaussiana. \textit{
+    $X \sim N(\mu, \sigma^2)$ con $\mu \in \mathbb{R}$, $\sigma^2 \in \mathbb{R}^+$ e densità:
+    $$f_X(x) = \frac{1}{\sqrt{2\pi\sigma^2}} \exp\left[-\frac{(x-\mu)^2}{2\sigma^2}\right]$$
+    Valgono:
+    \begin{enumerate}
+    \item $E(X) = \mu$
+    \item $Var(X) = \sigma^2$
+    \item $\Phi(z) = P(X \leq z) = 1 - \Phi(-z)$
+    \item $P(\mu - 4\sigma \leq X \leq \mu + 4\sigma) \approx 1$
+    \end{enumerate}    
+}
+
+\textbf{Def} Gaussiana standard. \textit{ \\
+    $X \sim N(0,1)$.
+}
+
+\bigskip
+
+\textbf{Prop} Trasformazioni affini di v.a. normali. \textit{
+    Sia $X \sim N(\mu, \sigma^2)$ e $Y=aX+b$ allora
+    $$Y \sim N(a\mu+b, a^2\sigma^2)$$
+    quindi se $X \sim N(\mu, \sigma^2) \Rightarrow$
+    $$Z = \frac{X-\mu}{\sigma} \sim N(0, 1)$$
+}
+
+\subsection*{Teoremi su v.a.c.}
+
+\textbf{Def} Media empirica/campionaria. \textit{
+    Siano $X_1, ..., X_n$ v.a.. Si definisce:
+    $$\overline{X_n} = \frac{1}{n} \sum\limits_{i=1}^n X_i$$
+}
+
+\textbf{Cor.} \textit{ Siano $X_1, ..., X_n$ v.a. i.i.d.. Allora:
+\begin{enumerate}
+  \item $E(\overline{X_n}) = E(X_1)$
+  \item $Var(\overline{X_n}) = \frac{1}{n} Var(X_1)$
+\end{enumerate}
+}
+
+\textbf{Def} Legge dei grandi numeri (LLN). \textit{
+Siano $X_1, \dots, X_n$ v.a. i.i.d. con media finita. Allora
+$$\overline{X_n} \to E(X_1)$$
+}
+
+\textbf{Def} Metodo Monte Carlo. \textit{
+$$\mathcal{I} = \int^b_a f(x)dx \quad b>a$$
+$$\mathcal{I} = (b-a)\int^b_a\frac{f(x)}{b-a} dx = (b-a)E(f(x))$$
+con $X = U(a, b)$
+}
+
+\textbf{Def} Teorema centrale del limite (CLT). \textit{
+Siano $X_1, \dots, X_n$ v.a. i.i.d. con $E(X_1) = \mu$, $Var(X_1) = \sigma^2$. Allora:
+\begin{gather}
+  \sqrt{n} \left( \frac{\overline{X_n}-\mu}{\sigma} \right) \to N(0,1) \\
+  \frac{\sum\limits_{i=1}^n (X_i - \mu)}{\sigma\sqrt{n}} \to N(0,1) \\
+  \sqrt{n}(\overline{X_n}-\mu) \to N(0,\sigma^2)
+\end{gather}
+}
+
+\textbf{Prop} Velocità di convergenza. \textit{
+Siano $X_1, \dots, X_n$ v.a. i.i.d. ($X_i \sim \mathcal{B}e(p)$). Allora:
+\begin{gather*}
+P(|\overline{X_n} - E(X_1)| \leq \varepsilon) > \alpha \\
+\iff n \geq \frac{Var(X_1)}{\varepsilon^2(1-\alpha)}
+\end{gather*}
+}
+
+\subsection*{Statistica descrittiva}
+\textbf{Def} Scarto quadratico medio. \textit{
+Sia $X$ v.a. con alfabeto $\{x_1, \dots, x_n\}$. Si definisce:
+$$\sigma = \sqrt{\frac{1}{n} \sum\limits_{i=1}^n (x_i - \overline{X})^2}$$
+}
+
+\subsection*{Statistica inferenziale}
+
+\textbf{Def} Modello statistico. \textit{
+    L'insieme di densità $\{f_\theta(x) \mid \theta \in \Theta\}$, dove $\theta$ è un parametro (o n-pla di parametri) della distribuzione e $\Theta$ è l'insieme dei possibili $\theta$.
+}
+
+\bigskip
+
+\textbf{Def} Campione casuiale di ampiezza $n$. \textit{$n$-pla di v.a. i.i.d. di legge $f_\theta(x)$.}
+
+\bigskip
+\textbf{Def} Statistica. \textit{Una qualsiasi funzione che si applica a un campione casuale.}
+
+\bigskip
+\textbf{Def} Stimatore. \textit{Una statistica $\hat{\theta}(x)$ usata per approssimare il valore di $\theta$ in un modello statistico.}
+
+\bigskip
+\textbf{Def} Stimatore corretto. \textit{Uno stimatore $T(x)$ tale che $E^\theta(T) \to \theta$.}
+
+\bigskip
+\textbf{Def} Stimatore consistente. \textit{Uno stimatore $T(x)$ tale che $Var^\theta(T) \to 0$.}
+
+\bigskip
+\textbf{Prop} Combinazioni lineari di Gaussiane indipendenti. \textit{
+Siano $X_1, \dots, X_n$ v.a. indipendenti con $X_i \sim N(\mu_i,\sigma_i^2)$ e siano $a_1, \dots, a_n
+\in \mathbb{R}$. Allora:
+$$\sum\limits_{i=1}^n a_iX_i \sim N\left( \sum\limits_{i=1}^n a_i\mu_i, \sum\limits_{i=1}^n a_i^2\sigma_i^2 \right)$$
+}
+
+\bigskip
+
+\textbf{Def} Maximum Likelihood Estimator. \textit{
+Siano $X_1, \dots, X_n$ v.a. i.i.d con $X_i \sim f_\theta(X_i)$ e sia $Lik(\theta) = \prod\limits_{i=1}^n f_\theta(X_i)$. Lo stimatore MLE $\hat{\theta}_{ML}(\cdot)$ è uno stimatore di $\theta$ che massimizza $Lik(\theta)$.
+}
+
+\bigskip
+
+\textbf{Nota} $\theta$ continuo. \textit{
+Assumendo che il massimo sia l'unico punto critico, massimizzo $Lik(\theta)$ ponendo $\frac{\partial}{\partial \theta} Lik = 0$. Poichè $\log x \nearrow$, conviene massimizzare $\log Lik(\theta)$ ponendo: \\ $\frac{\partial}{\partial \theta} \log Lik = \sum\limits_{i=1}^n \frac{\partial}{\partial \theta} \log f_\theta(X_i) = 0$ \\ Nel caso generale va scelto $\theta_{ML}$ massimo globale, i.e. $\theta_{ML} = \max \{ \theta_{max} \mid \frac{\partial}{\partial \theta} Lik(\theta_{max}) = 0 \land \frac{\partial^2}{\partial \theta^2} Lik(\theta_{max}) < 0 \}$.
+}
+
+\bigskip
+
+\textbf{Nota} $\theta$ discreto \textit{
+Sia $g(\theta) = \frac{Lik(\theta+1)}{Lik(\theta)}$. Se $g(\theta) \searrow$ massimizzo $Lik(\theta)$ ponendo $g(\theta) = 1$.
+}
+
+\bigskip
+
+\subsection*{Altro}
+
+\textbf{Integrazione per parti}
+
+$$\int f(x)g(x) dx = F(x)g(x) - \int F(x) g'(x)dx$$
+
+\textbf{Integrazione per sostituzione}
+
+$$\int f(x)g'(x) dx = \int f(t) dt$$
+
+con $t = g(x)$ e $dt = g'(x)dx$
+
+$$\int \frac{f'(x)}{f(x)} dx = ln|f(x)|$$
+
+\bigskip
+
+\textbf{Integrali notevoli}
+
+$$\int x^\alpha dx = \frac{x^{\alpha+1}}{\alpha+1}$$
+
+$$\int \frac{1}{\sqrt{x}} dx = 2\sqrt{x}$$
+
+$$\int sin^2(x) dx = \frac{1}{2} (x - \frac{1}{2} sin(2x))$$
+
+
+
+
+
+\end{multicols*}
+\end{document}
